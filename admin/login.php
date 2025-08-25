@@ -1,10 +1,11 @@
-<!-- login.php --><?php
+<!-- /admin/login.php -->
+<?php
 require_once '../includes/config.php';
 require_once '../includes/auth.php';
 
 // إذا كان المستخدم مسجلاً بالفعل، إعادة التوجيه إلى لوحة التحكم
 if (isLoggedIn()) {
-    header('Location: ' . ADMIN_URL . '/index.php');
+    header('Location: index.php'); // داخل admin
     exit;
 }
 ?>
@@ -16,11 +17,7 @@ if (isLoggedIn()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول - لوحة تحكم ظل الجنوب</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Cairo', sans-serif;
             background: linear-gradient(135deg, #1b6b8f 0%, #0f3a4d 100%);
@@ -42,72 +39,37 @@ if (isLoggedIn()) {
             text-align: center;
             margin-bottom: 30px;
         }
-        .logo h1 {
-            color: #1b6b8f;
-            font-size: 24px;
-            margin-top: 10px;
-        }
+        .logo h1 { color: #1b6b8f; font-size: 24px; margin-top: 10px; }
         .logo i {
-            width: 50px;
-            height: 50px;
+            width: 50px; height: 50px;
             background: linear-gradient(135deg, #1b6b8f, #0f3a4d);
             color: white;
             border-radius: 50%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            font-weight: bold;
+            font-size: 20px; font-weight: bold;
         }
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
         .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #0f3a4d;
-            font-weight: 600;
+            display: block; margin-bottom: 8px; color: #0f3a4d; font-weight: 600;
         }
         .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: all 0.3s;
+            width: 100%; padding: 12px 15px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 16px; transition: all 0.3s;
         }
         .form-group input:focus {
-            border-color: #1b6b8f;
-            outline: none;
+            border-color: #1b6b8f; outline: none;
             box-shadow: 0 0 0 3px rgba(27, 107, 143, 0.1);
         }
         .btn {
-            width: 100%;
-            padding: 12px;
-            background: #f2b705;
-            color: #1b1b1b;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
+            width: 100%; padding: 12px; background: #f2b705;
+            color: #1b1b1b; border: none; border-radius: 8px;
+            font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s;
         }
-        .btn:hover {
-            background: #d9a404;
-            transform: translateY(-2px);
-        }
-        .alert {
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-        }
-        .alert-error {
-            background: #ffebee;
-            color: #c62828;
-            border: 1px solid #ffcdd2;
-        }
+        .btn:hover { background: #d9a404; transform: translateY(-2px); }
+        .alert { padding: 12px; border-radius: 8px; margin-bottom: 20px; display: none; }
+        .alert-error { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
     </style>
 </head>
 <body>
@@ -119,7 +81,8 @@ if (isLoggedIn()) {
         
         <div id="errorAlert" class="alert alert-error"></div>
         
-        <form id="loginForm">
+        <!-- تعديل مسار النموذج -->
+        <form id="loginForm" action="login_process.php" method="POST">
             <div class="form-group">
                 <label for="username">اسم المستخدم</label>
                 <input type="text" id="username" name="username" required>
@@ -133,22 +96,18 @@ if (isLoggedIn()) {
     </div>
 
     <script>
+        // AJAX بديل إذا أحببت
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const errorAlert = document.getElementById('errorAlert');
-            
-            // إخفاء رسالة الخطأ إذا كانت ظاهرة
             errorAlert.style.display = 'none';
-            
-            // إرسال بيانات تسجيل الدخول إلى الخادم
+
             fetch('login_process.php', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
             })
             .then(response => response.json())
