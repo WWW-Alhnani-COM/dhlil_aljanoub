@@ -1,83 +1,10 @@
-# منع الوصول إلى الملفات الحساسة
-<Files ~ "^\.">
-    Order allow,deny
-    Deny from all
-</Files>
-
-<FilesMatch "\.(ini|log|sh|sql|env)$">
-    Order allow,deny
-    Deny from all
-</FilesMatch>
-
-# حماية مجلد includes
-<Directory "includes">
-    Order deny,allow
-    Deny from all
-</Directory>
-
-# حماية مجلد admin
-<Directory "admin">
-    # السماح بالوصول إلى الملفات الضرورية فقط
-    <FilesMatch "\.(php)$">
-        <IfModule mod_authz_core.c>
-            Require all denied
-        </IfModule>
-        <IfModule !mod_authz_core.c>
-            Order deny,allow
-            Deny from all
-        </IfModule>
-    </FilesMatch>
-    
-    # السماح بالوصول إلى الملفات الضرورية فقط
-    <Files "index.php">
-        Require all granted
-    </Files>
-    <Files "login.php">
-        Require all granted
-    </Files>
-    <Files "login_process.php">
-        Require all granted
-    </Files>
-    <Files "logout.php">
-        Require all granted
-    </Files>
-    <Files "dashboard.php">
-        Require all granted
-    </Files>
-</Directory>
-
-# إعادة التوجيه إلى HTTPS (إذا كان مدعوماً)
+# تفعيل إعادة الكتابة
 RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# منع عرض محتويات المجلدات
-Options -Indexes
+# إذا كانت الصفحة الرئيسية أو غير موجودة، أعد التوجيه إلى admin/login.php
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^$ /admin/login.php [L]
 
-# تحسين الأداء
-<IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresByType image/jpg "access plus 1 month"
-    ExpiresByType image/jpeg "access plus 1 month"
-    ExpiresByType image/gif "access plus 1 month"
-    ExpiresByType image/png "access plus 1 month"
-    ExpiresByType text/css "access plus 1 month"
-    ExpiresByType application/pdf "access plus 1 month"
-    ExpiresByType text/x-javascript "access plus 1 month"
-    ExpiresByType application/x-shockwave-flash "access plus 1 month"
-    ExpiresByType image/x-icon "access plus 1 year"
-    ExpiresDefault "access plus 2 days"
-</IfModule>
-
-# ضغط الملفات
-<IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/plain
-    AddOutputFilterByType DEFLATE text/html
-    AddOutputFilterByType DEFLATE text/xml
-    AddOutputFilterByType DEFLATE text/css
-    AddOutputFilterByType DEFLATE application/xml
-    AddOutputFilterByType DEFLATE application/xhtml+xml
-    AddOutputFilterByType DEFLATE application/rss+xml
-    AddOutputFilterByType DEFLATE application/javascript
-    AddOutputFilterByType DEFLATE application/x-javascript
-</IfModule>
+# السماح بالوصول للملفات والمجلدات الفعلية
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
