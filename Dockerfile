@@ -1,24 +1,29 @@
-# Dockerfile لمشروع PHP
+# استخدم صورة PHP مع Apache
 FROM php:8.2-apache
 
-# تفعيل PDO PostgreSQL
-RUN docker-php-ext-install pdo pdo_pgsql
+# إعداد المتغيرات البيئية للتوقيت
+ENV TZ=Asia/Aden
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# نسخ ملفات المشروع إلى مجلد السيرفر
-COPY . /var/www/html/
-
-# إنشاء مجلد uploads (لو غير موجود)
-RUN mkdir -p /var/www/html/admin/uploads \
-    && chown -R www-data:www-data /var/www/html/admin/uploads \
-    && chmod -R 755 /var/www/html/admin/uploads
-
-# فتح المنفذ 10000 (Render يستخدم هذا المنفذ)
-EXPOSE 10000
-
-# تشغيل Apache في الخلفية
-CMD ["apache2-foreground"]
-
- تحديث الحزم وتثبيت الأدوات اللازمة لبناء الامتدادات + PostgreSQL dev
+# تحديث النظام وتثبيت الحزم اللازمة لتثبيت امتدادات PHP
 RUN apt-get update && apt-get install -y \
     libpq-dev \
-    && docker-php-ext-install pdo pdo_pgsql
+    zip unzip git curl \
+    && docker-php-ext-install pdo pdo_pgsql \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# نسخ ملفات المشروع إلى مجلد Apache
+COPY ./alhnani_system/ /var/www/html/
+
+# منح الصلاحيات للمجلدات
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
+
+# تفعيل mod_rewrite في Apache
+RUN a2enmod rewrite
+
+# تعيين منفذ الاستماع (اختياري إذا تريد تغيير)
+EXPOSE 80
+
+# تشغيل Apache في الوضع الأمامي
+CMD ["apache2-foreground"]
