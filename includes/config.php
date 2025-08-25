@@ -1,10 +1,9 @@
-<?php
+<!-- config.php --><?php
 class Database {
-    // إعدادات محلية
-    private $host = "localhost";
+    private $host = "dpg-d2lqs2f5r7bs73e1bhi0-a.oregon-postgres.render.com";
     private $db_name = "dhlil_aljanoub";
-    private $username = "root"; // أو "postgres" حسب الإعداد
-    private $password = ""; // كلمة المرور المحلية
+    private $username = "dhlil_aljanoub_user";
+    private $password = "vEC8ZVLn3ExyhKzJurFU5P8jE59RGPMI";
     public $conn;
 
     public function getConnection() {
@@ -20,21 +19,16 @@ class Database {
             $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } catch(PDOException $exception) {
             error_log("Connection error: " . $exception->getMessage());
-            // عرض تفاصيل الخطأ للتdebug محلياً
-            die("عذراً، حدث خطأ في الاتصال بقاعدة البيانات: " . $exception->getMessage());
+            die("عذراً، حدث خطأ في الاتصال بقاعدة البيانات. يرجى المحاولة لاحقاً.");
         }
         return $this->conn;
     }
 }
 
-// إعدادات الموقع المحلي
-define('SITE_URL', 'http://localhost/dhlil_aljanoub');
+// إعدادات الموقع
+define('SITE_URL', 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']));
 define('ADMIN_URL', SITE_URL . '/admin');
 define('UPLOAD_PATH', __DIR__ . '/../admin/uploads/');
-
-// تفعيل عرض الأخطاء للتطوير المحلي
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 // إنشاء اتصال بقاعدة البيانات
 $database = new Database();
