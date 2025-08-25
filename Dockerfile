@@ -8,13 +8,12 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # تحديث النظام وتثبيت الحزم اللازمة لتثبيت امتدادات PHP
 RUN apt-get update && apt-get install -y \
     libpq-dev \
-    zip unzip git curl \
-    gcc make autoconf libc-dev pkg-config \
+    zip unzip git curl gcc make autoconf libc-dev pkg-config \
     && docker-php-ext-install pdo pdo_pgsql \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # نسخ ملفات المشروع إلى مجلد Apache
-COPY ./admin/ /var/www/html/
+COPY ./ /var/www/html/
 
 # منح الصلاحيات للمجلدات
 RUN chown -R www-data:www-data /var/www/html \
