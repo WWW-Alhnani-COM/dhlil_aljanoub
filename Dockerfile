@@ -17,3 +17,8 @@ EXPOSE 10000
 
 # تشغيل Apache في الخلفية
 CMD ["apache2-foreground"]
+
+ تحديث الحزم وتثبيت الأدوات اللازمة لبناء الامتدادات + PostgreSQL dev
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
