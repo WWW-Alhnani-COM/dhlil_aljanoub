@@ -9,6 +9,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     zip unzip git curl \
+    gcc make autoconf libc-dev pkg-config \
     && docker-php-ext-install pdo pdo_pgsql \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -22,7 +23,7 @@ RUN chown -R www-data:www-data /var/www/html \
 # تفعيل mod_rewrite في Apache
 RUN a2enmod rewrite
 
-# تعيين منفذ الاستماع (اختياري إذا تريد تغيير)
+# تعيين منفذ الاستماع
 EXPOSE 80
 
 # تشغيل Apache في الوضع الأمامي
