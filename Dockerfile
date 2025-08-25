@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # نسخ ملفات المشروع إلى مجلد Apache
-COPY ./dhlil_aljanoub/ /var/www/html/
+COPY ./admin/ /var/www/html/
 
 # منح الصلاحيات للمجلدات
 RUN chown -R www-data:www-data /var/www/html \
