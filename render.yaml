@@ -1,21 +1,30 @@
 services:
   - type: web
-    name: dhlil-aljanoub
-    env: php
+    name: dhlil-aljanoub-web
     plan: free
-    buildCommand: ""
-    startCommand: "php -S 0.0.0.0:8080"
+    env: node
+    buildCommand: "echo 'Building PHP application...'"
+    startCommand: "npx php-server --port=8080 --host=0.0.0.0 admin"
     envVars:
       - key: DB_HOST
-        value: your-database-host
-      - key: DB_NAME  
-        value: your-database-name
+        fromDatabase:
+          name: mysql-database
+          property: host
+      - key: DB_NAME
+        fromDatabase:
+          name: mysql-database
+          property: database
       - key: DB_USER
-        value: your-database-user
+        fromDatabase:
+          name: mysql-database
+          property: user
       - key: DB_PASS
-        value: your-database-password
+        fromDatabase:
+          name: mysql-database
+          property: password
 
 databases:
   - name: mysql-database
-    databaseName: main_database
+    databaseName: dhlil_aljanoub
     plan: free
+    ipAllowList: []
