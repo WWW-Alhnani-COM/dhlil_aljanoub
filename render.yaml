@@ -7,24 +7,12 @@ services:
     startCommand: "npx php-server --port=8080 --host=0.0.0.0 admin"
     envVars:
       - key: DB_HOST
-        fromDatabase:
-          name: mysql-database
-          property: host
+        value: "dpg-d3cp662li9vc73dpir7g-a"
+      - key: DB_PORT
+        value: "5432"
       - key: DB_NAME
-        fromDatabase:
-          name: mysql-database
-          property: database
+        value: "mysql_database_ieiw"
       - key: DB_USER
-        fromDatabase:
-          name: mysql-database
-          property: user
+        value: "mysql_database_ieiw_user"
       - key: DB_PASS
-        fromDatabase:
-          name: mysql-database
-          property: password
-
-databases:
-  - name: mysql-database
-    databaseName: dhlil_aljanoub
-    plan: free
-    ipAllowList: []
+        value: "k11NA72ExjZwLApd8JGveGrERbUxbXVu"
