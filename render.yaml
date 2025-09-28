@@ -2,9 +2,9 @@ services:
   - type: web
     name: dhlil-aljanoub-web
     plan: free
-    env: node
-    buildCommand: "echo 'Building PHP application...'"
-    startCommand: "npx php-server --port=8080 --host=0.0.0.0 admin"
+    env: docker
+    docker:
+      dockerfile: Dockerfile
     envVars:
       - key: DB_HOST
         value: "dpg-d3cp662li9vc73dpir7g-a"
