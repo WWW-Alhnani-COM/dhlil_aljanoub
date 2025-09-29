@@ -3,7 +3,14 @@ require_once('../includes/config.php');
 require_once('../includes/auth.php');
 
 checkPermission();
-
+// إذا كان المستخدم مسجلاً، توجيه للdashboard
+if (isLoggedIn()) {
+    header("Location: dashboard.php");
+    exit;
+} else {
+    // إذا لم يكن مسجلاً، توجيه لصفحة login
+    header("Location: login.php");
+    exit;
 // جلب عدد المنتجات
 $stmt = $pdo->query("SELECT COUNT(*) as count FROM products");
 $products_count = $stmt->fetch()['count'];
@@ -12,6 +19,7 @@ $products_count = $stmt->fetch()['count'];
 $stmt = $pdo->query("SELECT * FROM products ORDER BY created_at DESC LIMIT 5");
 $recent_products = $stmt->fetchAll();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
