@@ -82,14 +82,13 @@ if (isLoggedIn()) {
         <div id="errorAlert" class="alert alert-error"></div>
         
         <!-- تعديل مسار النموذج -->
-<input autocomplete="current-password" type="password" id="password" name="password" required>    <div class="form-group">
-                <label for="username">اسم المستخدم</label>
+<form id="loginForm" action="login_process.php" method="POST">
+    <label for="username">اسم المستخدم</label>
                 <input type="text" id="username" name="username" required>
             </div>
             <div class="form-group">
                 <label for="password">كلمة المرور</label>
-                <input type="password" id="password" name="password" required>
-            </div>
+<input autocomplete="current-password" type="password" id="password" name="password" required>            </div>
             <button type="submit" class="btn">تسجيل الدخول</button>
         </form>
     </div>
