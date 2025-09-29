@@ -82,7 +82,7 @@ if (isLoggedIn()) {
         <div id="errorAlert" class="alert alert-error"></div>
         
         <!-- تعديل مسار النموذج -->
-      <form id="loginForm" action="admin/login_process.php" method="POST">
+     <form id="loginForm" action="login_process.php" method="POST">
             <div class="form-group">
                 <label for="username">اسم المستخدم</label>
                 <input type="text" id="username" name="username" required>
