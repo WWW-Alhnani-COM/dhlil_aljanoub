@@ -103,7 +103,7 @@ if (isLoggedIn()) {
             const errorAlert = document.getElementById('errorAlert');
             errorAlert.style.display = 'none';
 
-            fetch('login_process.php', {
+            fetch('admin/login_process.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
