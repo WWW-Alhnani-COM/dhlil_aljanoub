@@ -2,7 +2,6 @@ services:
   - type: web
     name: dhlil-aljanoub-web
     plan: free
-    env: docker
     docker:
       dockerfile: Dockerfile
     envVars:
@@ -16,12 +15,3 @@ services:
         value: "mysql_database_ieiw_user"
       - key: DB_PASS
         value: "k11NA72ExjZwLApd8JGveGrERbUxbXVu"
-    healthCheckPath: /admin/login.php
-
-databases:
-  - name: mysql-database
-    databaseName: mysql_database_ieiw
-    plan: free
-    ipAllowList:
-      - source: "0.0.0.0/0"
-        description: "Allow all for web service"
