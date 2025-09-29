@@ -98,9 +98,9 @@ class Database {
 }
 
 // إعدادات الجلسات
-ini_set('session.cookie_httponly', 1);
-ini_set('session.cookie_secure', 1);
-ini_set('session.use_strict_mode', 1);
+// ini_set('session.cookie_httponly', 1);
+// ini_set('session.cookie_secure', 1);
+// ini_set('session.use_strict_mode', 1);
 
 // إعدادات الموقع
 define('SITE_URL', 'https://dhlil-aljanoub-web.onrender.com');
