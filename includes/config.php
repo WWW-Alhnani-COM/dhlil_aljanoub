@@ -8,6 +8,7 @@ class Database {
     public $conn;
 
     public function __construct() {
+        // استخدام إعدادات قاعدة البيانات من Render
         $this->host = getenv("DB_HOST") ?: "dpg-d3cp662li9vc73dpir7g-a";
         $this->port = getenv("DB_PORT") ?: "5432";
         $this->db_name = getenv("DB_NAME") ?: "mysql_database_ieiw";
@@ -19,7 +20,7 @@ class Database {
         $this->conn = null;
         try {
             $this->conn = new PDO(
-                "pgsql:host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->db_name,
+                "pgsql:host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->db_name, // تغيير إلى pgsql
                 $this->username,
                 $this->password
             );
@@ -27,7 +28,8 @@ class Database {
             $this->conn->exec("SET NAMES 'UTF8'");
         } catch(PDOException $exception) {
             error_log("Connection error: " . $exception->getMessage());
-            die("عذراً، حدث خطأ في الاتصال بقاعدة البيانات.");
+            // عرض رسالة خطأ بسيطة للمستخدم
+            die("عذراً، حدث خطأ في الاتصال بقاعدة البيانات. يرجى المحاولة لاحقاً.");
         }
         return $this->conn;
     }
