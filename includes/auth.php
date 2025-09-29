@@ -16,3 +16,4 @@ function requireLogin() {
 function checkPermission() {
     requireLogin();
 }
+?>
