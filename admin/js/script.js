@@ -31,7 +31,7 @@ document.getElementById('productForm').addEventListener('submit', function(e) {
     
     const formData = new FormData(this);
     
-    fetch('save_product.php', {
+    fetch('../admin/save_product.php', {
         method: 'POST',
         body: formData
     })
@@ -53,7 +53,7 @@ document.getElementById('productForm').addEventListener('submit', function(e) {
 
 // تعديل منتج موجود
 function editProduct(id) {
-    fetch('get_product.php?id=' + id)
+    fetch('../admin/get_product.php?id=' + id)
     .then(response => response.json())
     .then(product => {
         document.getElementById('modalTitle').textContent = 'تعديل المنتج';
@@ -84,7 +84,7 @@ function editProduct(id) {
 // حذف منتج
 function deleteProduct(id) {
     if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
-        fetch('delete_product.php?id=' + id)
+        fetch('../admin/delete_product.php?id=' + id)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -103,7 +103,7 @@ function deleteProduct(id) {
 
 // تسجيل الخروج
 function logout() {
-    fetch('logout.php')
+    fetch('../admin/logout.php')
     .then(() => {
         window.location.href = 'login.php';
     });
