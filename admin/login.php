@@ -1,7 +1,6 @@
-<!-- /admin/login.php -->
 <?php
 require_once '../includes/config.php';
-require_once '../includes/auth.php';
+// require_once '../includes/auth.php';
 
 // إذا كان المستخدم مسجلاً بالفعل، إعادة التوجيه إلى لوحة التحكم
 if (isLoggedIn()) {
