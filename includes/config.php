@@ -1,6 +1,6 @@
 <?php
 class Database {
-    private $host = "dpg-d3cp662li9vc73dpir7g-a";
+    private $host = "dpg-d3cp662li9vc73dpir7g-a.oregon-postgres.render.com";
     private $port = "5432";
     private $db_name = "mysql_database_ieiw";
     private $username = "mysql_database_ieiw_user";
@@ -16,28 +16,18 @@ class Database {
                 $this->password
             );
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            error_log("✅ تم الاتصال بقاعدة البيانات بنجاح");
         } catch(PDOException $exception) {
-            $error_message = "❌ فشل الاتصال بقاعدة البيانات: " . $exception->getMessage();
-            error_log($error_message);
-            // عرض الخطأ للمطور
-            if (isset($_SESSION['admin_logged_in'])) {
-                die($error_message);
-            } else {
-                die("عذراً، حدث خطأ في الاتصال بالخادم.");
-            }
+            error_log("Connection error: " . $exception->getMessage());
+            die("عذراً، حدث خطأ في الاتصال بقاعدة البيانات.");
         }
         return $this->conn;
     }
 }
 
-// ... باقي الكود
-// إعدادات الموقع
 define('SITE_URL', 'https://dhlil-aljanoub-web.onrender.com');
-define('ADMIN_URL', SITE_URL . '../admin');
+define('ADMIN_URL', SITE_URL . '/admin');
 define('UPLOAD_PATH', __DIR__ . '/../uploads/');
 
-// إنشاء اتصال بقاعدة البيانات
 $database = new Database();
 $pdo = $database->getConnection();
 ?>
