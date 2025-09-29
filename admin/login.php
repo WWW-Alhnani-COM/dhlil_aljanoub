@@ -5,7 +5,7 @@ require_once '../includes/auth.php';
 
 // إذا كان المستخدم مسجلاً بالفعل، إعادة التوجيه إلى لوحة التحكم
 if (isLoggedIn()) {
-    header('Location: dashboard.php'); // داخل admin
+    header('Location: dashboard.php');
     exit;
 }
 ?>
@@ -81,20 +81,21 @@ if (isLoggedIn()) {
         
         <div id="errorAlert" class="alert alert-error"></div>
         
-        <!-- تعديل مسار النموذج -->
-<form id="loginForm" action="login_process.php" method="POST">
-    <label for="username">اسم المستخدم</label>
-                <input type="text" id="username" name="username" required>
+        <!-- التصحيح النهائي: استخدام المسار المطلق -->
+        <form id="loginForm" method="POST">
+            <div class="form-group">
+                <label for="username">اسم المستخدم</label>
+                <input type="text" id="username" name="username" autocomplete="username" required>
             </div>
             <div class="form-group">
                 <label for="password">كلمة المرور</label>
-<input autocomplete="current-password" type="password" id="password" name="password" required>            </div>
+                <input type="password" id="password" name="password" autocomplete="current-password" required>
+            </div>
             <button type="submit" class="btn">تسجيل الدخول</button>
         </form>
     </div>
 
     <script>
-        // AJAX بديل إذا أحببت
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -103,21 +104,30 @@ if (isLoggedIn()) {
             const errorAlert = document.getElementById('errorAlert');
             errorAlert.style.display = 'none';
 
-            fetch('admin/login_process.php', {
+            // التصحيح: استخدام المسار المطلق مع /admin/
+            fetch('/admin/login_process.php', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                headers: { 
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
                 body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
-                    window.location.href = 'index.php';
+                    window.location.href = '/admin/dashboard.php';
                 } else {
                     errorAlert.textContent = data.message;
                     errorAlert.style.display = 'block';
                 }
             })
             .catch(error => {
+                console.error('Error:', error);
                 errorAlert.textContent = 'حدث خطأ في الاتصال بالخادم';
                 errorAlert.style.display = 'block';
             });
