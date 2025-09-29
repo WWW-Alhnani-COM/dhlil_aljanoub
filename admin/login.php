@@ -132,7 +132,7 @@ if (isLoggedIn()) {
     errorAlert.textContent = 'حدث خطأ في الاتصال بالخادم: ' + error.message;
     errorAlert.style.display = 'block';
 });
-        });
+        
     </script>
 </body>
 </html>
