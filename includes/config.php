@@ -41,4 +41,3 @@ define('UPLOAD_PATH', __DIR__ . '/../uploads/');
 // إنشاء اتصال بقاعدة البيانات
 $database = new Database();
 $pdo = $database->getConnection();
-?>
