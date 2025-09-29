@@ -1,24 +1,22 @@
 FROM php:8.2-apache
 
-# تثبيت إضافات PostgreSQL
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
+RUN apt-get update && apt-get install -y libpq-dev \
     && docker-php-ext-install pdo pdo_pgsql
 
-# نسخ جميع الملفات
 COPY . /var/www/html/
 
-# تفعيل mod_rewrite لـ Apache
-RUN a2enmod rewrite
+RUN a2enmod rewrite \
+    && chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
 
-# إصلاح الصلاحيات
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html \
-    && mkdir -p /var/www/html/uploads \
-    && chown -R www-data:www-data /var/www/html/uploads
+# إنشاء Virtual Host لتوجيه كل شيء إلى مجلد admin
+RUN echo '<VirtualHost *:80>\n\
+    DocumentRoot /var/www/html/admin\n\
+    <Directory "/var/www/html/admin">\n\
+        Options Indexes FollowSymLinks\n\
+        AllowOverride All\n\
+        Require all granted\n\
+    </Directory>\n\
+</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
 
-# استخدام المنفذ الصحيح
-EXPOSE 80
-
-# الأمر الافتراضي لـ Apache
 CMD ["apache2-foreground"]
