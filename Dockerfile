@@ -9,14 +9,8 @@ RUN a2enmod rewrite \
     && chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-# إنشاء Virtual Host لتوجيه كل شيء إلى مجلد admin
-RUN echo '<VirtualHost *:80>\n\
-    DocumentRoot /var/www/html/admin\n\
-    <Directory "/var/www/html/admin">\n\
-        Options Indexes FollowSymLinks\n\
-        AllowOverride All\n\
-        Require all granted\n\
-    </Directory>\n\
-</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
+# تغيير DocumentRoot إلى مجلد admin
+RUN sed -i 's|/var/www/html|/var/www/html/admin|g' /etc/apache2/sites-available/000-default.conf
+RUN sed -i 's|/var/www/html|/var/www/html/admin|g' /etc/apache2/apache2.conf
 
 CMD ["apache2-foreground"]
