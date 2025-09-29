@@ -104,33 +104,34 @@ if (isLoggedIn()) {
             const errorAlert = document.getElementById('errorAlert');
             errorAlert.style.display = 'none';
 
-            // التصحيح: استخدام المسار المطلق مع /admin/
-            fetch('/admin/login_process.php', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    window.location.href = '/admin/dashboard.php';
-                } else {
-                    errorAlert.textContent = data.message;
-                    errorAlert.style.display = 'block';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                errorAlert.textContent = 'حدث خطأ في الاتصال بالخادم';
-                errorAlert.style.display = 'block';
-            });
+           fetch('/admin/login_process.php', {
+    method: 'POST',
+    headers: { 
+        'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+})
+.then(response => {
+    // تحقق من نوع المحتوى أولاً
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError('الخادم لم يرجع JSON');
+    }
+    return response.json();
+})
+.then(data => {
+    if (data.success) {
+        window.location.href = '/admin/dashboard.php';
+    } else {
+        errorAlert.textContent = data.message;
+        errorAlert.style.display = 'block';
+    }
+})
+.catch(error => {
+    console.error('Error:', error);
+    errorAlert.textContent = 'حدث خطأ في الاتصال بالخادم: ' + error.message;
+    errorAlert.style.display = 'block';
+});
         });
     </script>
 </body>
