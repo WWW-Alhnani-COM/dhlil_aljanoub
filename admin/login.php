@@ -5,7 +5,7 @@ require_once '../includes/auth.php';
 
 // إذا كان المستخدم مسجلاً بالفعل، إعادة التوجيه إلى لوحة التحكم
 if (isLoggedIn()) {
-    header('Location: index.php'); // داخل admin
+    header('Location: dashboard.php'); // داخل admin
     exit;
 }
 ?>
