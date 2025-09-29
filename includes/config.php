@@ -34,7 +34,7 @@ class Database {
 // ... باقي الكود
 // إعدادات الموقع
 define('SITE_URL', 'https://dhlil-aljanoub-web.onrender.com');
-define('ADMIN_URL', SITE_URL . '/admin');
+define('ADMIN_URL', SITE_URL . '../admin');
 define('UPLOAD_PATH', __DIR__ . '/../uploads/');
 
 // إنشاء اتصال بقاعدة البيانات
